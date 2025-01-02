@@ -5,7 +5,6 @@ setwd(getwd())
 library(tidyquant) # for getSymbols()
 library(usethis) # for GIT configuration
 
-
 # Git config: https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r
 #use_git_config(user.name='W-oland', user.email='tatu.jarvenranta@gmail.com')
 #use_git()
