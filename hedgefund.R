@@ -2,13 +2,17 @@
 # Simple 60-40 Portfolio construction
 rm(list=ls()) # removes all objects in workspace
 setwd(getwd())
-library(tidyquant) 
-library(usethis)
-
+library(tidyquant) # for getSymbols()
+library(usethis) # for GIT configuration
 
 # Git config: https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r
-use_git_config(user.name='W-oland', user.email='tatu.jarvenranta@gmail.com')
-use_git()
+#use_git_config(user.name='W-oland', user.email='tatu.jarvenranta@gmail.com')
+#use_git()
+
+use_git_config(user.name = 'pohjanlaakso', user.email = 'pohjanlaakso@gmail.com')
+
+# next up!
+#Create a Personal Access Token (PAT) on GitHub
 
 # download data and visualise
 getSymbols('QQQ'); plot(QQQ$QQQ.Close)
@@ -33,7 +37,7 @@ source('tests.R'); gmean_test(r_equity, rlog_equity)
 
 # portfolio correlation
 cor_difdim <- function(vector_a, vector_b) {
-  df <- merge(vector_a, vector_b)
+  df <- merge(vector_a, vector_b) # equalises the differing dimensions of both vectors
   df <- na.omit(df)
   return(cor(df)[2,1])
 }
@@ -53,7 +57,11 @@ portfolio_sharpe <- function(rf_rate, portfolio_sd, portfolio_return) {
   return( (portfolio_return-rf_rate)/portfolio_sd )
 }
 
-psharpe<- portfolio_sharpe(0.0495, pvar, expected_return)
+# download risk free rate
+source('fama_french.R')
+rf_rate <- ( 1 + median(data$RF)/100 )^12-1 # calculate an annual long term average from monthly data
+
+psharpe<- portfolio_sharpe(rf_rate, pvar, expected_return)
 
 # getup github
 
